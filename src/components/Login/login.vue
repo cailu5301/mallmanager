@@ -3,13 +3,13 @@
     <el-form :model="loginForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="loginForm" size="medium">
       <h2>用户登录界面</h2>
       <el-form-item label="用户名" prop="username">
-        <el-input type="password" v-model="loginForm.username"></el-input>
+        <el-input type="text" v-model="loginForm.username"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
         <el-input type="password" v-model="loginForm.password"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" class="btn">提交</el-button>
+        <el-button type="primary" class="btn" @click="handleLogin">提交</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -35,6 +35,30 @@ export default {
           {required: true, message: '请输入密码', trigger: 'blur'}
         ]
       }
+    }
+  },
+  methods: {
+    handleLogin () {
+      // console.log(1)
+      this.$http.post('login', this.loginForm)
+        .then(res => {
+          console.log(res)
+          const {data: {data, meta: {status, msg}}} = res
+          if (status === 200) {
+            this.$message({
+              type: 'success',
+              message: msg
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: msg
+            })
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   }
 }
