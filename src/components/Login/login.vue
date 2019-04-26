@@ -39,12 +39,13 @@ export default {
   },
   methods: {
     async handleLogin () {
-      const {data: {data, meta: {status, msg}}} = await this.$http.post('login', this.loginForm)
+      const {data: {data , meta: {status, msg}}} = await this.$http.post('login', this.loginForm)
       if (status === 200) {
         this.$message({
           type: 'success',
           message: msg
         })
+        window.localStorage.setItem('token', data.token)
         this.$router.push({
           name: 'Home'
         })
