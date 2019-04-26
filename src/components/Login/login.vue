@@ -38,27 +38,22 @@ export default {
     }
   },
   methods: {
-    handleLogin () {
-      // console.log(1)
-      this.$http.post('login', this.loginForm)
-        .then(res => {
-          console.log(res)
-          const {data: {data, meta: {status, msg}}} = res
-          if (status === 200) {
-            this.$message({
-              type: 'success',
-              message: msg
-            })
-          } else {
-            this.$message({
-              type: 'error',
-              message: msg
-            })
-          }
+    async handleLogin () {
+      const {data: {data, meta: {status, msg}}} = await this.$http.post('login', this.loginForm)
+      if (status === 200) {
+        this.$message({
+          type: 'success',
+          message: msg
         })
-        .catch(error => {
-          console.log(error)
+        this.$router.push({
+          name: 'Home'
         })
+      } else {
+        this.$message({
+          type: 'error',
+          message: msg
+        })
+      }
     }
   }
 }
