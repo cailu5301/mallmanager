@@ -9,7 +9,7 @@
           <h2 class="title">电商后台管理系统</h2>
         </el-col>
         <el-col :span="2">
-          <a href="#" class="logout">退出</a>
+          <a href="#" class="logout" @click.prevent="handleLogout">退出</a>
         </el-col>
       </el-row>
     </el-header>
@@ -101,7 +101,37 @@
 
 <script>
 export default {
-
+  beforeMount () {
+    if (!window.localStorage.getItem('token')) {
+      this.$router.push({
+        name: 'Login'
+      })
+      this.$message.warning('请先登录')
+    }
+  },
+  methods: {
+    handleLogout () {
+      this.$confirm('确定要退出登录吗', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        localStorage.clear()
+        this.$router.push({
+          name: 'Login'
+        })
+        this.$message({
+          type: 'success',
+          message: '退出成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消退出'
+        })         
+      })
+    }
+  }
 }
 </script>
 
