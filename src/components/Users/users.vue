@@ -1,15 +1,87 @@
 <template>
-  <div>
-    <h2>users-------</h2>
-  </div>
+  <el-card class="box-card">
+    <!-- 面包屑 -->
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+      <el-breadcrumb-item>用户列表</el-breadcrumb-item>
+    </el-breadcrumb>
+    <!-- 搜索框 -->
+    <el-row class="search">
+      <el-col>
+        <el-input placeholder="请输入内容" v-model="searchText" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search"></el-button>
+        </el-input>
+        <el-button type="primary">添加用户</el-button>
+      </el-col>
+    </el-row>
+    <!-- 表格 -->
+    <!--
+    username: "admin" 
+    id: 500
+    email: "adsfad@qq.com"
+    mobile: "12345678"
+    create_time: 1486720211
+    mg_state: true
+    -->
+    <el-table
+      :data="usersData" style="width: 100%">
+      <el-table-column prop="id" label="#" width="100">
+      </el-table-column>
+      <el-table-column prop="username" label="姓名" width="160">
+      </el-table-column>
+      <el-table-column prop="email" label="邮箱" width="180">
+      </el-table-column>
+      <el-table-column prop="mobile" label="电话" width="180">
+      </el-table-column>
+      <el-table-column label="创建日期" width="200">
+        <template slot-scope="scope">
+          {{ scope.row.create_time | fmtDate }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="state" label="用户状态" width="250">
+        <template slot-scope="scope">
+          <el-switch v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column prop="" label="操作" width="280">
+      </el-table-column>
+    </el-table>
+  </el-card>
 </template>
 
 <script>
 export default {
-
+  created () {
+    this.getUsersData()
+  },
+  data () {
+    return {
+      searchText: '',
+      usersData: [],
+      pagenum: 1,
+      pagesize: 5
+    }
+  },
+  methods: {
+    async getUsersData () {
+      const {data: {data, meta: {status, msg}}} = await this.$http.get(`users?query=${this.searchText}&pagenum=${this.pagenum}&pagesize=${this.pagesize}`)
+      if (status === 200) {
+        this.usersData = data.users
+      }
+    }
+  }
 }
 </script>
 
 <style>
-
+.box-card {
+  height: 100%;
+}
+.input-with-select {
+  width: 350px;
+}
+.search {
+  margin-top: 30px;
+}
 </style>
