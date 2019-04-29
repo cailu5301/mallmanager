@@ -47,7 +47,7 @@
       </el-table-column>
       <el-table-column label="操作" width="280">
         <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
+          <el-button type="primary" icon="el-icon-edit" circle size="mini" plain @click="$refs.isShowEdit.showEditDialog(scope.row)"></el-button>
           <el-button type="danger" icon="el-icon-delete" circle size="mini" plain @click.prevent="handleDelete(scope.row.id)"></el-button>
           <el-button type="success" icon="el-icon-check" circle size="mini" plain></el-button>
         </template>
@@ -67,11 +67,15 @@
 
     <!-- 对话框 - 添加用户 -->
     <addUser ref="isShowAdd" @success-add="getUsersData()"></addUser>
+
+    <!-- 对话框 - 编辑用户 -->
+    <editUser ref="isShowEdit" @success-edit="getUsersData()"></editUser>
   </el-card>
 </template>
 
 <script>
 import addUser from './addUser'
+import editUser from './editUser'
 export default {
   created () {
     this.getUsersData()
@@ -86,7 +90,8 @@ export default {
     }
   },
   components: {
-    addUser
+    addUser,
+    editUser
   },
   methods: {
     async getUsersData () {
