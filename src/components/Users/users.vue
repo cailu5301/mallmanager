@@ -48,7 +48,7 @@
       <el-table-column label="操作" width="280">
         <template slot-scope="scope">
           <el-button type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
-          <el-button type="danger" icon="el-icon-delete" circle size="mini" plain></el-button>
+          <el-button type="danger" icon="el-icon-delete" circle size="mini" plain @click.prevent="handleDelete(scope.row.id)"></el-button>
           <el-button type="success" icon="el-icon-check" circle size="mini" plain></el-button>
         </template>
       </el-table-column>
@@ -112,6 +112,22 @@ export default {
     getAllUser() {
       this.pagenum = 1
       this.getUsersData()
+    },
+    handleDelete (id) {
+      this.$confirm('确认要删除该用户吗', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        const { data: {meta: { status, msg }} } = await this.$http.delete(`users/${id}`)
+        if(status === 200) {
+          this.$message.success(msg)
+          this.pagenum = 1
+          this.getUsersData()
+        }
+      }).catch(() => {
+        this.$message.info('已取消删除')        
+      })
     }
   }
 }
