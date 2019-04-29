@@ -49,7 +49,7 @@
         <template slot-scope="scope">
           <el-button type="primary" icon="el-icon-edit" circle size="mini" plain @click="$refs.isShowEdit.showEditDialog(scope.row)"></el-button>
           <el-button type="danger" icon="el-icon-delete" circle size="mini" plain @click.prevent="handleDelete(scope.row.id)"></el-button>
-          <el-button type="success" icon="el-icon-check" circle size="mini" plain></el-button>
+          <el-button type="success" icon="el-icon-check" circle size="mini" plain @click.prevent="$refs.isShowEditRole.showEditRoleDialog(scope.row)"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -70,12 +70,16 @@
 
     <!-- 对话框 - 编辑用户 -->
     <editUser ref="isShowEdit" @success-edit="getUsersData()"></editUser>
+
+    <!-- 对话框 - 分配用户角色 -->
+    <editUserRole ref="isShowEditRole" @success-eidtRole="getUsersData()"></editUserRole>
   </el-card>
 </template>
 
 <script>
 import addUser from './addUser'
 import editUser from './editUser'
+import editUserRole from './editUserRole'
 export default {
   created () {
     this.getUsersData()
@@ -91,7 +95,8 @@ export default {
   },
   components: {
     addUser,
-    editUser
+    editUser,
+    editUserRole
   },
   methods: {
     async getUsersData () {
