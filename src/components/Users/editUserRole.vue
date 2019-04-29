@@ -39,11 +39,15 @@ export default {
     async showEditRoleDialog (user) {
       this.dialogFormVisible = true
       this.formData = user
-      const { data: {data} } = await this.$http.get(`roles`)
       this.currentId = this.formData.id
-      this.roleList = data
-      const res = await this.$http.get(`users/${this.currentId}`)
-      this.selectVal = res.data.data.rid
+      const [ roleData, userData ] = await Promise.all([
+        this.$http.get(`roles`),
+        this.$http.get(`users/${this.currentId}`)
+      ])
+      // const { data: {data} } = await this.$http.get(`roles`)
+      this.roleList = roleData.data.data
+      // const res = await this.$http.get(`users/${this.currentId}`)
+      this.selectVal = userData.data.data.rid
     },
     async handleSubmit () {
       const { data: {data, meta: {status, msg}} } = await this.$http.put(`users/${this.currentId}/role`, {rid: this.selectVal})
