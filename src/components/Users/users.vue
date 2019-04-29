@@ -42,7 +42,7 @@
       </el-table-column>
       <el-table-column prop="state" label="用户状态" width="250">
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+          <el-switch v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949" @change="changeState(scope.row)"></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="280">
@@ -124,7 +124,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(async () => {
-        const { data: {meta: { status, msg }} } = await this.$http.delete(`users/${id}`)
+        const { data: {meta: { status, msg }}} = await this.$http.delete(`users/${id}`)
         if(status === 200) {
           this.$message.success(msg)
           this.pagenum = 1
@@ -133,6 +133,13 @@ export default {
       }).catch(() => {
         this.$message.info('已取消删除')        
       })
+    },
+    async changeState (user) {
+      const { data: { data, meta: {status, msg}} } = await this.$http.put(`users/${user.id}/state/${user.mg_state}`)
+      if (status === 200) {
+        this.$message.success('修改成功')
+        this.getUsersData()
+      }
     }
   }
 }
