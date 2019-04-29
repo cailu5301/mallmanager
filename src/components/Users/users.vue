@@ -12,7 +12,7 @@
         <el-input placeholder="请输入内容" v-model="searchText" class="input-with-select" clearable @clear="getAllUser()">
           <el-button slot="append" icon="el-icon-search" @click="searchUser()"></el-button>
         </el-input>
-        <el-button type="primary">添加用户</el-button>
+        <el-button type="primary" @click="$refs.isShowAdd.showAddDialog()">添加用户</el-button>
       </el-col>
     </el-row>
     <!-- 表格 -->
@@ -64,10 +64,14 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
+
+    <!-- 对话框 - 添加用户 -->
+    <addUser ref="isShowAdd" @success-add="getUsersData()"></addUser>
   </el-card>
 </template>
 
 <script>
+import addUser from './addUser'
 export default {
   created () {
     this.getUsersData()
@@ -78,8 +82,11 @@ export default {
       usersData: [],
       pagenum: 1,
       pagesize: 2,
-      total: -1
+      total: -1,
     }
+  },
+  components: {
+    addUser
   },
   methods: {
     async getUsersData () {
