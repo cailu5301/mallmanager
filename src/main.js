@@ -6,12 +6,11 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/common.css'
-import axios from 'axios'
 import moment from 'moment'
-axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
-Vue.prototype.$http = axios
-const AUTH_TOKEN = localStorage.getItem('token')
-axios.defaults.headers.common['Authorization'] = AUTH_TOKEN
+import cusBread from '@/components/cusBread/cusBread'
+import http from './http'
+
+Vue.use(http)
 
 Vue.use(ElementUI)
 
@@ -22,6 +21,7 @@ Vue.filter('fmtDate', (v) => {
 })
 
 /* eslint-disable no-new */
+Vue.component(cusBread.name, cusBread)
 new Vue({
   el: '#app',
   router,
