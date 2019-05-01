@@ -8,9 +8,9 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/common.css'
 import moment from 'moment'
 import cusBread from '@/components/cusBread/cusBread'
-import http from './http'
+import httpServer from './http'
 
-Vue.use(http)
+Vue.use(httpServer)
 
 Vue.use(ElementUI)
 
