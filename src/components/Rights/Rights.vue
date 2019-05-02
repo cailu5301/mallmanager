@@ -6,6 +6,7 @@
     <el-table
       class="table"
       border
+      height="550"
       :data="RightsData"
       style="width: 100%">
       <el-table-column type="expand">
@@ -50,6 +51,11 @@
       <el-table-column
         label="层级"
         prop="level">
+        <template slot-scope="scope">
+          <span v-if="scope.row.level === '0'">一级</span>
+          <span v-if="scope.row.level === '1'">二级</span>
+          <span v-if="scope.row.level === '2'">三级</span>
+        </template>
       </el-table-column>
     </el-table>
   </el-card>
