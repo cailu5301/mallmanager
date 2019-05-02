@@ -6,7 +6,7 @@ httpServer.install = function (Vue, options) {
   // 请求拦截器
   axios.interceptors.request.use(function (config) {
     console.log('请求拦截器被触发了....')
-    if(config.url !== 'login') { 
+    if (config.url !== 'login') { 
       const AUTH_TOKEN = localStorage.getItem('token')
       config.headers['Authorization'] = AUTH_TOKEN
     }
